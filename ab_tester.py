@@ -5,11 +5,27 @@ import random
 import pandas as pd
 from datetime import datetime
 from PIL import Image
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+import io
 
 # Configuration
 IMAGES_DIR = './sapphire_images'
 METADATA_FILE = 'metadata.json'
 PREFERENCES_FILE = 'preferences.csv'
+
+# Email configuration - you'll need to set these up
+EMAIL_CONFIG = {
+    'smtp_server': st.secrets["email"]["smtp_server"],
+    'smtp_port': st.secrets["email"]["smtp_port"],
+    'sender_email': st.secrets["email"]["sender_email"],
+    'sender_password': st.secrets["email"]["sender_password"],
+    'recipient_email': st.secrets["email"]["recipient_email"]
+}
+
 
 def load_metadata():
     """Load metadata with tags"""
@@ -31,8 +47,64 @@ def get_tagged_images():
     
     return tagged_images
 
-def save_preference_result(image_a, image_b, chosen, liked_features, disliked_features, test_type="general"):
-    """Save AB test result with feature feedback"""
+def send_results_email(preferences_data):
+    """Send preference results via email"""
+    try:
+        # Create DataFrame and CSV
+        df = pd.DataFrame(preferences_data)
+        csv_buffer = io.StringIO()
+        df.to_csv(csv_buffer, index=False)
+        csv_data = csv_buffer.getvalue()
+        
+        # Create email
+        msg = MIMEMultipart()
+        msg['From'] = EMAIL_CONFIG['sender_email']
+        msg['To'] = EMAIL_CONFIG['recipient_email']
+        msg['Subject'] = f"Ring Preference Results - {datetime.now().strftime('%Y-%m-%d %H:%M')}"
+        
+        # Email body
+        body = f"""
+Hi! Here are the latest ring preference results.
+
+Session Summary:
+- Total comparisons: {len(preferences_data)}
+- Session started: {preferences_data[0]['timestamp'] if preferences_data else 'N/A'}
+- Session ended: {preferences_data[-1]['timestamp'] if preferences_data else 'N/A'}
+
+The detailed results are attached as a CSV file.
+
+Love,
+Your Ring Preference Bot 💎
+        """
+        
+        msg.attach(MIMEText(body, 'plain'))
+        
+        # Attach CSV
+        attachment = MIMEBase('application', 'octet-stream')
+        attachment.set_payload(csv_data.encode())
+        encoders.encode_base64(attachment)
+        attachment.add_header(
+            'Content-Disposition',
+            f'attachment; filename=ring_preferences_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
+        )
+        msg.attach(attachment)
+        
+        # Send email
+        server = smtplib.SMTP(EMAIL_CONFIG['smtp_server'], EMAIL_CONFIG['smtp_port'])
+        server.starttls()
+        server.login(EMAIL_CONFIG['sender_email'], EMAIL_CONFIG['sender_password'])
+        text = msg.as_string()
+        server.sendmail(EMAIL_CONFIG['sender_email'], EMAIL_CONFIG['recipient_email'], text)
+        server.quit()
+        
+        return True
+        
+    except Exception as e:
+        st.error(f"Failed to send email: {e}")
+        return False
+
+def save_preference_result(image_a, image_b, chosen, liked_features, disliked_features):
+    """Save AB test result in session state"""
     result = {
         'timestamp': datetime.now().isoformat(),
         'image_a': image_a,
@@ -43,13 +115,23 @@ def save_preference_result(image_a, image_b, chosen, liked_features, disliked_fe
         'session_id': st.session_state.get('session_id', 'default')
     }
     
-    # Save to CSV
-    df = pd.DataFrame([result])
+    # Store in session state
+    if 'all_preferences' not in st.session_state:
+        st.session_state.all_preferences = []
     
-    if os.path.exists(PREFERENCES_FILE):
-        df.to_csv(PREFERENCES_FILE, mode='a', header=False, index=False)
-    else:
-        df.to_csv(PREFERENCES_FILE, index=False)
+    st.session_state.all_preferences.append(result)
+    
+    # Auto-send email every 10 comparisons
+    if len(st.session_state.all_preferences) % 10 == 0:
+        if send_results_email(st.session_state.all_preferences):
+            st.success("✅ Results automatically sent!")
+    
+    # Also save a backup locally if possible (for development)
+    try:
+        df = pd.DataFrame(st.session_state.all_preferences)
+        df.to_csv('preferences_backup.csv', index=False)
+    except:
+        pass  # Fail silently in deployed environment
 
 def get_random_pair(images, test_type=None):
     """Get a random pair of images, optionally filtered by test type"""
@@ -75,6 +157,14 @@ def get_random_pair(images, test_type=None):
 def main():
 
     st.title("💎 Ring Preference A/B Testing")
+    if 'all_preferences' in st.session_state and st.session_state.all_preferences:
+        
+        # Manual send button
+        if st.button("📧 Send Results Now"):
+            if send_results_email(st.session_state.all_preferences):
+                st.success("Email sent!")
+            else:
+                st.error("Failed to send email")
     
     # Initialize session state
     if 'session_id' not in st.session_state:

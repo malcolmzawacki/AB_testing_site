@@ -1,3 +1,0 @@
-timestamp,image_a,image_b,chosen,liked_features,disliked_features,session_id
-2025-06-08T20:52:50.287967,a621ce9cb2d22941d1ca8d8573082490.jpg,f020ae2e8b7dc43f85eb4235f3b6d82f.jpg,f020ae2e8b7dc43f85eb4235f3b6d82f.jpg,[],"[""color_intensity:Dark Blue""]",session_20250608_203631
-2025-06-08T20:56:24.839000,43bafd4c4578f6a3968366503f5207a0.jpg,323b08cce71765b8b9428a31463bbdd1.jpg,323b08cce71765b8b9428a31463bbdd1.jpg,[],[],session_20250608_203631
