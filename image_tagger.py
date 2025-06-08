@@ -9,11 +9,13 @@ METADATA_FILE = 'metadata.json'
 
 # Tag categories
 TAG_OPTIONS = {
-    'stone_shape': ['Oval', 'Round', 'Cushion', 'Emerald', 'Pear', 'Marquise'],
     'color_intensity': ['Light Blue', 'Medium Blue', 'Dark Blue', 'Royal Blue'],
     'setting_style': ['Solitaire', 'Halo', 'Three Stone', 'Vintage', 'Modern'],
+    'head_setting': ['Four Prong','Six Prong', 'Double Prong','Eight Prong',
+                     'V-Prong','Bezel Set','Half Bezel'],
     'metal_type': ['White Gold', 'Yellow Gold', 'Rose Gold', 'Platinum'],
-    'overall_style': ['Classic', 'Vintage', 'Modern', 'Art Deco', 'Nature Inspired']
+    'overall_style': ['Classic', 'Vintage', 'Modern', 'Nature Inspired'],
+    'oval_shape': ['Wide', 'Normal', 'Skinny']
 }
 
 def load_metadata():
@@ -40,7 +42,6 @@ def get_image_files():
     return sorted(files)
 
 def main():
-    st.set_page_config(page_title="Image Tagging Interface", layout="wide")
     st.title("🏷️ Image Tagging Interface")
     
     # Load data
@@ -75,16 +76,17 @@ def main():
     current_image = image_files[st.session_state.current_index]
     current_tags = metadata.get(current_image, {}).get('tags', {})
     
-    # Display image
-    st.subheader(f"Current Image: {current_image}")
+    
     
     col1, col2 = st.columns([1, 1])
     
     with col1:
+        # Display image
+        st.subheader(f"Current Image: {current_image}")
         try:
             image_path = os.path.join(IMAGES_DIR, current_image)
             image = Image.open(image_path)
-            st.image(image, caption=current_image, use_column_width=True)
+            st.image(image, caption=current_image, use_container_width=True)
         except Exception as e:
             st.error(f"Error loading image: {e}")
     
@@ -98,7 +100,7 @@ def main():
             st.write(f"**{category.replace('_', ' ').title()}**")
             
             # Create columns for tag buttons
-            cols = st.columns(len(options))
+            cols = st.columns(len(options),border=True)
             current_value = current_tags.get(category)
             
             for i, option in enumerate(options):
@@ -149,6 +151,23 @@ def main():
                     st.write(f"**{img}**: {tags}")
                 else:
                     st.write(f"**{img}**: No tags")
+    
+     # Navigation
+    col1, col2, col3 = st.columns([1, 2, 1])
+    
+    with col1:
+        if st.button("⬅️ Previous", disabled=st.session_state.current_index == 0, key='5436356e'):
+            st.session_state.current_index -= 1
+            st.rerun()
+    
+    with col2:
+        st.write(f"Image {st.session_state.current_index + 1} of {len(image_files)}")
+    
+    with col3:
+        if st.button("Next ➡️", disabled=st.session_state.current_index == len(image_files) - 1, key= '235435645635635446'):
+            st.session_state.current_index += 1
+            st.rerun()
 
 if __name__ == "__main__":
+    
     main()
