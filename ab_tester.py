@@ -276,7 +276,7 @@ def main():
         
         with col2:
             if st.button("⏭️ Skip Feedback"):
-                save_preference_result(image_a, image_b, chosen, [], [], test_type)
+                save_preference_result(image_a, image_b, chosen, [], [])
                 
                 # Reset for next round
                 st.session_state.current_pair = None
