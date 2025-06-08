@@ -19,11 +19,11 @@ PREFERENCES_FILE = 'preferences.csv'
 
 # Email configuration - you'll need to set these up
 EMAIL_CONFIG = {
-    'smtp_server': st.secrets["email"]["smtp_server"],
-    'smtp_port': st.secrets["email"]["smtp_port"],
-    'sender_email': st.secrets["email"]["sender_email"],
-    'sender_password': st.secrets["email"]["sender_password"],
-    'recipient_email': st.secrets["email"]["recipient_email"]
+    'smtp_server': st.secrets["smtp_server"],
+    'smtp_port': st.secrets["smtp_port"],
+    'sender_email': st.secrets["sender_email"],
+    'sender_password': st.secrets["sender_password"],
+    'recipient_email': st.secrets["recipient_email"]
 }
 
 
