@@ -103,7 +103,8 @@ Your Ring Preference Bot 💎
         st.error(f"Failed to send email: {e}")
         return False
 
-def save_preference_result(image_a, image_b, chosen, liked_features, disliked_features):
+def save_preference_result(image_a, image_b, chosen, 
+                           liked_features, disliked_features,general_feedback):
     """Save AB test result in session state"""
     result = {
         'timestamp': datetime.now().isoformat(),
@@ -112,6 +113,7 @@ def save_preference_result(image_a, image_b, chosen, liked_features, disliked_fe
         'chosen': chosen,
         'liked_features': json.dumps(liked_features),
         'disliked_features': json.dumps(disliked_features),
+        'general_feedback': general_feedback,
         'session_id': st.session_state.get('session_id', 'default')
     }
     
@@ -253,39 +255,6 @@ def main():
 
         st.subheader("What influenced your decision?")
         st.write("Click on the features you liked or disliked about each option:")
-
-        # Finish and save
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("💾 Save & Continue", type="primary"):
-                save_preference_result(
-                    image_a, image_b, chosen,
-                    st.session_state.get('liked_features', []),
-                    st.session_state.get('disliked_features', [])
-                )
-                
-                # Reset for next round
-                st.session_state.current_pair = None
-                st.session_state.show_feedback = False
-                st.session_state.chosen_image = None
-                st.session_state.liked_features = []
-                st.session_state.disliked_features = []
-                
-                st.success("Saved! Getting next pair...")
-                st.rerun()
-        
-        with col2:
-            if st.button("⏭️ Skip Feedback"):
-                save_preference_result(image_a, image_b, chosen, [], [])
-                
-                # Reset for next round
-                st.session_state.current_pair = None
-                st.session_state.show_feedback = False
-                st.session_state.chosen_image = None
-                st.session_state.liked_features = []
-                st.session_state.disliked_features = []
-                
-                st.rerun()
         
         # Get all available features from both images
         tags_a = metadata.get(image_a, {}).get('tags', {})
@@ -347,8 +316,40 @@ def main():
                         st.write("**Disliked Features:**")
                         for feature in st.session_state.disliked_features:
                             st.write(f"❌ {feature}")
+        general_feedback = st.text_area("General Feedback")
+         # Finish and save
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("💾 Save & Continue", type="primary",key="save1"):
+                save_preference_result(
+                    image_a, image_b, chosen,
+                    st.session_state.get('liked_features', []),
+                    st.session_state.get('disliked_features', []),
+                    general_feedback
+                )
+                
+                # Reset for next round
+                st.session_state.current_pair = None
+                st.session_state.show_feedback = False
+                st.session_state.chosen_image = None
+                st.session_state.liked_features = []
+                st.session_state.disliked_features = []
+                
+                st.success("Saved! Getting next pair...")
+                st.rerun()
         
-    
+        with col2:
+            if st.button("⏭️ Skip Feedback",key="skip1"):
+                save_preference_result(image_a, image_b, chosen, [], [],"")
+                
+                # Reset for next round
+                st.session_state.current_pair = None
+                st.session_state.show_feedback = False
+                st.session_state.chosen_image = None
+                st.session_state.liked_features = []
+                st.session_state.disliked_features = []
+                
+                st.rerun()
     # Sidebar stats
     if os.path.exists(PREFERENCES_FILE):
         df = pd.read_csv(PREFERENCES_FILE)
