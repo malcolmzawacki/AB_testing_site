@@ -882,5 +882,65 @@
       1104
     ],
     "manually_added": true
+  },
+  "0ce95140ee1c91b43a5f34c5a4378300.jpg": {
+    "tags": {
+      "color_intensity": "Light Blue",
+      "setting_style": "Vintage",
+      "head_setting": "Four Prong",
+      "metal_type": "Yellow Gold",
+      "overall_style": "Classic",
+      "oval_shape": "Skinny"
+    }
+  },
+  "2f7514a6af8a2824769e9a47d6b67a82.jpg": {
+    "tags": {
+      "color_intensity": "Medium Blue",
+      "setting_style": "Three Stone",
+      "head_setting": "Four Prong",
+      "metal_type": "Yellow Gold",
+      "overall_style": "Nature Inspired",
+      "oval_shape": "Normal"
+    }
+  },
+  "71eec350dd4204ec27d47000fd464744.jpg": {
+    "tags": {
+      "color_intensity": "Dark Blue",
+      "setting_style": "Vintage",
+      "head_setting": "Four Prong",
+      "metal_type": "Yellow Gold",
+      "overall_style": "Nature Inspired",
+      "oval_shape": "Normal"
+    }
+  },
+  "85a5d97bd6c0b3d04854d00ae3a44bb5.jpg": {
+    "tags": {
+      "color_intensity": "Dark Blue",
+      "setting_style": "Three Stone",
+      "head_setting": "Four Prong",
+      "metal_type": "Yellow Gold",
+      "overall_style": "Nature Inspired",
+      "oval_shape": "Normal"
+    }
+  },
+  "8807e23366936f414418a96be2025ff7.jpg": {
+    "tags": {
+      "color_intensity": "Light Blue",
+      "setting_style": "Three Stone",
+      "head_setting": "Four Prong",
+      "metal_type": "Yellow Gold",
+      "overall_style": "Nature Inspired",
+      "oval_shape": "Normal"
+    }
+  },
+  "e42a9007151b389e5647f080471c7b55.jpg": {
+    "tags": {
+      "color_intensity": "Dark Blue",
+      "setting_style": "Halo",
+      "head_setting": "Four Prong",
+      "metal_type": "Yellow Gold",
+      "overall_style": "Vintage",
+      "oval_shape": "Normal"
+    }
   }
 }
