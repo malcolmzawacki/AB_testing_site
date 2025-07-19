@@ -136,37 +136,49 @@ def save_preference_result(image_a, image_b, chosen,
     except:
         pass  # Fail silently in deployed environment
 
-def get_random_pair(images, test_type=None):
-    """Get a random pair of images, optionally filtered by test type"""
-    metadata = load_metadata()
-    
-    if test_type and test_type != "general":
-        # Filter images that have the specific feature tagged
-        filtered_images = []
-        for img in images:
-            tags = metadata.get(img, {}).get('tags', {})
-            if test_type in tags:
-                filtered_images.append(img)
-        
-        if len(filtered_images) >= 2:
-            return random.sample(filtered_images, 2)
-    
-    # Default: random pair from all images
-    if len(images) >= 2:
-        return random.sample(images, 2)
-    
-    return None
 
 
 def get_random_pair(images, test_type=None):
-    """Get a smart pair of images using the pairing system"""
+    """Get a smart pair of images using the pairing system with session caching"""
     try:
-        # Try to get a smart pair first
-        from smart_pairing_system import get_smart_pair
-        smart_pair = get_smart_pair(IMAGES_DIR, METADATA_FILE, 'preferences.csv', test_type)
+        # Check if we have pre-calculated pairs for this session
+        if 'smart_pairs_queue' not in st.session_state or len(st.session_state.smart_pairs_queue) == 0:
+            # Pre-calculate a batch of smart pairs
+            from smart_pairing_system import SmartPairingSystem
+            pairing_system = SmartPairingSystem(METADATA_FILE, 'preferences.csv', IMAGES_DIR)
+            
+            # Get a large batch of prioritized pairs (100 pairs should cover any session)
+            priority_pairs = pairing_system.get_prioritized_pairs(100, exclude_unpopular=True)
+            
+            if priority_pairs:
+                # Filter by test type if specified
+                if test_type and test_type != "general":
+                    filtered_pairs = []
+                    for pair in priority_pairs:
+                        img_a_tags = pairing_system.metadata.get(pair['image_a'], {}).get('tags', {})
+                        img_b_tags = pairing_system.metadata.get(pair['image_b'], {}).get('tags', {})
+                        
+                        if test_type in img_a_tags and test_type in img_b_tags:
+                            filtered_pairs.append([pair['image_a'], pair['image_b']])
+                    
+                    st.session_state.smart_pairs_queue = filtered_pairs
+                else:
+                    # Convert to simple pairs list
+                    st.session_state.smart_pairs_queue = [[pair['image_a'], pair['image_b']] for pair in priority_pairs]
+                
+                st.session_state.pairs_calculated_for_test_type = test_type
+                print(f"Pre-calculated {len(st.session_state.smart_pairs_queue)} smart pairs for session")
         
-        if smart_pair and len(smart_pair) == 2:
-            return smart_pair
+        # Check if test type changed (need to recalculate)
+        if st.session_state.get('pairs_calculated_for_test_type') != test_type:
+            st.session_state.smart_pairs_queue = []  # Force recalculation
+            return get_random_pair(images, test_type)  # Recursive call to recalculate
+        
+        # Return the next pair from our queue
+        if len(st.session_state.smart_pairs_queue) > 0:
+            next_pair = st.session_state.smart_pairs_queue.pop(0)  # Take first pair
+            print(f"Using smart pair {len(st.session_state.smart_pairs_queue)+1}/100: {next_pair}")
+            return next_pair
         
     except Exception as e:
         print(f"Smart pairing failed, falling back to random: {e}")
@@ -196,11 +208,27 @@ def show_pairing_insights():
     """Show pairing system insights in the sidebar"""
     try:
         from smart_pairing_system import SmartPairingSystem
-        pairing_system = SmartPairingSystem(METADATA_FILE, 'preferences.csv')
+        pairing_system = SmartPairingSystem(METADATA_FILE, 'preferences.csv', IMAGES_DIR)
         recommendations = pairing_system.generate_pairing_recommendations()
         
         st.sidebar.write("---")
-        st.sidebar.write("**Pairing Insights:**")
+        st.sidebar.write("**Smart Pairing Status:**")
+        
+        # Show queue status
+        if 'smart_pairs_queue' in st.session_state:
+            remaining = len(st.session_state.smart_pairs_queue)
+            st.sidebar.metric("Pairs Remaining", f"{remaining}/100")
+            
+            test_type = st.session_state.get('pairs_calculated_for_test_type', 'general')
+            st.sidebar.write(f"Current focus: {test_type}")
+            
+            if st.sidebar.button("🔄 Refresh Pair Queue"):
+                st.session_state.smart_pairs_queue = []  # Clear queue to force recalculation
+                st.sidebar.success("Queue will refresh on next pair!")
+        else:
+            st.sidebar.write("Queue will initialize on first pair request")
+        
+        st.sidebar.write("**System Insights:**")
         st.sidebar.metric("Underexposed Images", recommendations['summary']['underexposed_images'])
         st.sidebar.metric("Likely Unpopular", recommendations['summary']['likely_unpopular'])
         
@@ -439,6 +467,8 @@ def main():
         st.sidebar.metric("Total Comparisons", len(df))
         st.sidebar.metric("This Session", len(df[df['session_id'] == st.session_state.session_id]))
         st.sidebar.metric("Remaining Candidates",len(tagged_images))
+    
+    show_pairing_insights()
     
 
 if __name__ == "__main__":
