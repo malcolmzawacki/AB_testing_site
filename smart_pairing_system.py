@@ -5,7 +5,7 @@ import random
 from collections import defaultdict
 
 class SmartPairingSystem:
-    def __init__(self, metadata_file, preferences_file, images_dir='./sapphire_images'):
+    def __init__(self, metadata_file, preferences_file='./preferences.csv', images_dir='./sapphire_images'):
         self.metadata_file = metadata_file
         self.preferences_file = preferences_file
         self.images_dir = images_dir
@@ -69,8 +69,8 @@ class SmartPairingSystem:
                 'wins': wins,
                 'win_rate': win_rate,
                 'elo_rating': elo_rating,
-                'needs_more_data': comparisons < 5,  # Flag for underexposed images
-                'likely_unpopular': comparisons >= 8 and elo_rating < 1450  # Flag for pruning
+                'needs_more_data': comparisons < 3,  # Flag for underexposed images
+                'likely_unpopular': comparisons >= 3 and elo_rating < 1475  # Flag for pruning
             }
         
         return image_stats
@@ -280,7 +280,11 @@ if __name__ == "__main__":
     
     print("\n=== PRUNING CANDIDATES ===")
     for candidate in recommendations['pruning_candidates']:
-        print(f"{candidate['image']} - Elo: {candidate['elo_rating']:.1f}, Win Rate: {candidate['win_rate']:.1%}")
-    
+        print(f"""{candidate['image']} - 
+              Elo: {candidate['elo_rating']:.1f}, 
+              Win Rate: {candidate['win_rate']:.1%}, 
+              Comparisons: {candidate['comparisons']}
+              """)
+
     # Save strategy
     pairing_system.save_pairing_strategy()

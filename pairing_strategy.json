@@ -1,0 +1,164 @@
+{
+  "summary": {
+    "total_images": 35,
+    "underexposed_images": 10,
+    "likely_unpopular": 0,
+    "total_possible_pairs": 595,
+    "pairs_already_shown": 128
+  },
+  "next_priority_pairs": [
+    {
+      "image_a": "8807e23366936f414418a96be2025ff7.jpg",
+      "image_b": "e42a9007151b389e5647f080471c7b55.jpg",
+      "priority_score": 154.78505204510887,
+      "already_shown": false,
+      "combined_comparisons": 2
+    },
+    {
+      "image_a": "f020ae2e8b7dc43f85eb4235f3b6d82f.jpg",
+      "image_b": "71eec350dd4204ec27d47000fd464744.jpg",
+      "priority_score": 154.31664632030726,
+      "already_shown": false,
+      "combined_comparisons": 2
+    },
+    {
+      "image_a": "f020ae2e8b7dc43f85eb4235f3b6d82f.jpg",
+      "image_b": "323b08cce71765b8b9428a31463bbdd1.jpg",
+      "priority_score": 154.29659549641838,
+      "already_shown": false,
+      "combined_comparisons": 4
+    },
+    {
+      "image_a": "0ce95140ee1c91b43a5f34c5a4378300.jpg",
+      "image_b": "71eec350dd4204ec27d47000fd464744.jpg",
+      "priority_score": 153.18888875270787,
+      "already_shown": false,
+      "combined_comparisons": 2
+    },
+    {
+      "image_a": "85a5d97bd6c0b3d04854d00ae3a44bb5.jpg",
+      "image_b": "e42a9007151b389e5647f080471c7b55.jpg",
+      "priority_score": 153.15026930515089,
+      "already_shown": false,
+      "combined_comparisons": 1
+    },
+    {
+      "image_a": "323b08cce71765b8b9428a31463bbdd1.jpg",
+      "image_b": "71eec350dd4204ec27d47000fd464744.jpg",
+      "priority_score": 153.03381215830072,
+      "already_shown": false,
+      "combined_comparisons": 2
+    },
+    {
+      "image_a": "0ce95140ee1c91b43a5f34c5a4378300.jpg",
+      "image_b": "e42a9007151b389e5647f080471c7b55.jpg",
+      "priority_score": 152.6824791233781,
+      "already_shown": false,
+      "combined_comparisons": 2
+    },
+    {
+      "image_a": "49e2631a76b80460e305e9c483f3bbe1.jpg",
+      "image_b": "2f7514a6af8a2824769e9a47d6b67a82.jpg",
+      "priority_score": 152.6745968523818,
+      "already_shown": false,
+      "combined_comparisons": 4
+    },
+    {
+      "image_a": "4f63d4d7208d03ab985962d30f85594b.jpg",
+      "image_b": "e42a9007151b389e5647f080471c7b55.jpg",
+      "priority_score": 152.49812559778073,
+      "already_shown": false,
+      "combined_comparisons": 1
+    },
+    {
+      "image_a": "4f63d4d7208d03ab985962d30f85594b.jpg",
+      "image_b": "49e2631a76b80460e305e9c483f3bbe1.jpg",
+      "priority_score": 152.3613808981892,
+      "already_shown": false,
+      "combined_comparisons": 3
+    },
+    {
+      "image_a": "4f63d4d7208d03ab985962d30f85594b.jpg",
+      "image_b": "8807e23366936f414418a96be2025ff7.jpg",
+      "priority_score": 152.27079978091965,
+      "already_shown": false,
+      "combined_comparisons": 3
+    },
+    {
+      "image_a": "f020ae2e8b7dc43f85eb4235f3b6d82f.jpg",
+      "image_b": "0ce95140ee1c91b43a5f34c5a4378300.jpg",
+      "priority_score": 152.19516704967836,
+      "already_shown": false,
+      "combined_comparisons": 4
+    },
+    {
+      "image_a": "4f63d4d7208d03ab985962d30f85594b.jpg",
+      "image_b": "85a5d97bd6c0b3d04854d00ae3a44bb5.jpg",
+      "priority_score": 152.16691577793324,
+      "already_shown": false,
+      "combined_comparisons": 2
+    },
+    {
+      "image_a": "4f63d4d7208d03ab985962d30f85594b.jpg",
+      "image_b": "0ce95140ee1c91b43a5f34c5a4378300.jpg",
+      "priority_score": 152.16031295201856,
+      "already_shown": false,
+      "combined_comparisons": 3
+    },
+    {
+      "image_a": "4f63d4d7208d03ab985962d30f85594b.jpg",
+      "image_b": "71eec350dd4204ec27d47000fd464744.jpg",
+      "priority_score": 151.84106922824014,
+      "already_shown": false,
+      "combined_comparisons": 1
+    },
+    {
+      "image_a": "323b08cce71765b8b9428a31463bbdd1.jpg",
+      "image_b": "0ce95140ee1c91b43a5f34c5a4378300.jpg",
+      "priority_score": 151.66787787984072,
+      "already_shown": false,
+      "combined_comparisons": 4
+    },
+    {
+      "image_a": "49e2631a76b80460e305e9c483f3bbe1.jpg",
+      "image_b": "8807e23366936f414418a96be2025ff7.jpg",
+      "priority_score": 151.574422725142,
+      "already_shown": false,
+      "combined_comparisons": 4
+    },
+    {
+      "image_a": "4f63d4d7208d03ab985962d30f85594b.jpg",
+      "image_b": "2f7514a6af8a2824769e9a47d6b67a82.jpg",
+      "priority_score": 151.4614989759112,
+      "already_shown": false,
+      "combined_comparisons": 3
+    },
+    {
+      "image_a": "0ce95140ee1c91b43a5f34c5a4378300.jpg",
+      "image_b": "85a5d97bd6c0b3d04854d00ae3a44bb5.jpg",
+      "priority_score": 151.44778301174517,
+      "already_shown": false,
+      "combined_comparisons": 3
+    },
+    {
+      "image_a": "49e2631a76b80460e305e9c483f3bbe1.jpg",
+      "image_b": "e42a9007151b389e5647f080471c7b55.jpg",
+      "priority_score": 151.44547597203047,
+      "already_shown": false,
+      "combined_comparisons": 2
+    }
+  ],
+  "pruning_candidates": [],
+  "underexposed_images": [
+    "4f63d4d7208d03ab985962d30f85594b.jpg",
+    "f020ae2e8b7dc43f85eb4235f3b6d82f.jpg",
+    "49e2631a76b80460e305e9c483f3bbe1.jpg",
+    "323b08cce71765b8b9428a31463bbdd1.jpg",
+    "0ce95140ee1c91b43a5f34c5a4378300.jpg",
+    "2f7514a6af8a2824769e9a47d6b67a82.jpg",
+    "71eec350dd4204ec27d47000fd464744.jpg",
+    "85a5d97bd6c0b3d04854d00ae3a44bb5.jpg",
+    "8807e23366936f414418a96be2025ff7.jpg",
+    "e42a9007151b389e5647f080471c7b55.jpg"
+  ]
+}
