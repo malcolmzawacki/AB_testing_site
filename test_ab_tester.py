@@ -282,7 +282,7 @@ def main():
     test_type = "general"
     
     # Generate new pair button
-    if st.sidebar.button("🎲 Get New Pair") or st.session_state.current_pair is None:
+    if st.button("🎲 Get New Pair") or st.session_state.current_pair is None:
         pair = get_random_pair(tagged_images, test_type)
         if pair:
             st.session_state.current_pair = pair
