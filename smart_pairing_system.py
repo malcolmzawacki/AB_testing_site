@@ -70,7 +70,7 @@ class SmartPairingSystem:
                 'win_rate': win_rate,
                 'elo_rating': elo_rating,
                 'needs_more_data': comparisons < 3,  # Flag for underexposed images
-                'likely_unpopular': comparisons >= 3 and elo_rating < 1475  # Flag for pruning
+                'likely_unpopular': comparisons >= 3 and elo_rating < 1500  # Flag for pruning
             }
         
         return image_stats
