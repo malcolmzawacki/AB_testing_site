@@ -5,6 +5,7 @@ pg = st.navigation([
     st.Page("home.py",title="Home"),
     # st.Page("image_tagger.py",title="Image Tagger",icon='💎'),
     st.Page("test_ab_tester.py", title="A or B?", icon = '💎'),
-    st.Page("gallery.py", title = "Image Gallery")
+    st.Page("gallery.py", title = "Image Gallery"),
+    st.Page("final_rating.py", title = "Final Rating", icon = '⭐')
 ])
 pg.run()
